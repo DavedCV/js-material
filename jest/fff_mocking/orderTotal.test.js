@@ -1,13 +1,9 @@
 const orderTotal = require("./orderTotal");
 
 it("calls vatapi.com correctly", () => {
-  const fakeFetch = (url, options) => {
-    expect(url).toBe("https://vatapi.com/v1/country-code-check?code=DE");
-    expect(options.headers.apikey).toBe("key123");
-
-    isFakeFetchCalled = true;
-
-    return Promise.resolve({
+  // use mock function with jest native support
+  const fakeFetch = jest.fn().mockReturnValue(
+    Promise.resolve({
       json: () =>
         Promise.resolve({
           rates: {
@@ -16,8 +12,9 @@ it("calls vatapi.com correctly", () => {
             },
           },
         }),
-    });
-  };
+    }),
+  );
+
   const fakeApiKeyWrapper = {
     secret: {
       apikey: "key123",
@@ -29,6 +26,12 @@ it("calls vatapi.com correctly", () => {
     items: [{ name: "Dragon Waffles", price: 20, quantity: 2 }],
   }).then((result) => {
     expect(result).toBe(20 * 2 * 1.19);
+
+    // after the mock function call test the url and key
+    expect(fakeFetch).toBeCalledWith(
+      "https://vatapi.com/v1/country-code-check?code=DE",
+      { headers: { apikey: "key123" } },
+    );
   });
 });
 
