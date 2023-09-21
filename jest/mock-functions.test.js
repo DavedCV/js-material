@@ -108,7 +108,7 @@ const myMock = jest.fn();
 console.log(myMock());
 // > undefined
 
-myMock.mockReturnValueOnce(10).mockReturnValueOnce('x').mockReturnValue(true);
+myMock.mockReturnValueOnce(10).mockReturnValueOnce("x").mockReturnValue(true);
 
 console.log(myMock(), myMock(), myMock(), myMock());
 // > 10, 'x', true, true
@@ -121,10 +121,123 @@ const filterTestFn = jest.fn();
 // and `false` for the second call
 filterTestFn.mockReturnValueOnce(true).mockReturnValueOnce(false);
 
-const result = [11, 12].filter(num => filterTestFn(num));
+const result = [11, 12].filter((num) => filterTestFn(num));
 
 console.log(result);
 // > [11]
 
 console.log(filterTestFn.mock.calls[0][0]); // 11
 console.log(filterTestFn.mock.calls[1][0]); // 12
+
+/* 
+  Mocking modules --------------------------------------------------------------
+
+  Suppose we have a class that fetches users from our API. The class uses axios 
+  to call the API then returns the data attribute which contains all the users.
+
+  Now, in order to test this method without actually hitting the API (and thus 
+  creating slow and fragile tests), we can use the jest.mock(...) function to 
+  automatically mock the axios module.
+
+  Once we mock the module we can provide a mockResolvedValue for .get that 
+  returns the data we want our test to assert against. In effect, we are 
+  saying that we want axios.get('/users.json') to return a fake response.
+
+*/
+
+const axios = require("axios");
+
+class Users {
+  static all() {
+    return axios.get("/users.json").then((resp) => resp.data);
+  }
+}
+
+jest.mock("axios");
+
+test("should fetch users", () => {
+  const users = [{ name: "Bob" }];
+  const resp = { data: users };
+  axios.get.mockResolvedValue(resp);
+
+  return Users.all().then((data) => expect(data).toEqual(users));
+});
+
+/* 
+  Mock Implementations ---------------------------------------------------------
+
+  Still, there are cases where it's useful to go beyond the ability to specify 
+  return values and full-on replace the implementation of a mock function. This 
+  can be done with jest.fn or the mockImplementationOnce method on mock functions.
+
+  The mockImplementation method is useful when you need to define the default
+  implementation of a mock function that is created from another module.
+
+  When you need to recreate a complex behavior of a mock function such that
+  multiple function calls produce different results, use the 
+  mockImplementationOnce method.
+*/
+
+const myMockFn = jest.fn((cb) => cb(null, true));
+myMockFn((err, val) => console.log(val));
+
+// --
+
+jest.mock("./foo");
+const foo = require("./foo");
+
+foo.mockImplementation(() => console.log("Mocked foo imported function"));
+foo();
+
+// --
+
+const myMockFnMult = jest
+  .fn()
+  .mockImplementationOnce((cb) => cb(null, true))
+  .mockImplementationOnce((cb) => cb(null, false));
+
+myMockFnMult((err, val) => console.log(val));
+// > true
+
+myMockFnMult((err, val) => console.log(val));
+// > false
+
+const myMockFnMult2 = jest
+  .fn(() => "default")
+  .mockImplementationOnce(() => "first call")
+  .mockImplementationOnce(() => "second call");
+
+console.log(myMockFnMult2(), myMockFnMult2(), myMockFnMult2(), myMockFnMult2());
+// > 'first call', 'second call', 'default', 'default'
+
+/* 
+  Mock Names -------------------------------------------------------------------
+
+  You can optionally provide a name for your mock functions, which will be 
+  displayed instead of 'jest.fn()' in the test error output. Use .mockName() 
+  if you want to be able to quickly identify the mock function reporting an 
+  error in your test output.
+*/
+
+const myMockFnName = jest
+  .fn()
+  .mockReturnValue("default")
+  .mockImplementation((scalar) => 42 + scalar)
+  .mockName("add42");
+
+console.log(myMockFnName(1));
+
+/* 
+  Custom Matchers --------------------------------------------------------------
+*/
+
+// The mock function was called at least once
+test("custom matchers mock fn", () => {
+  expect(myMockFnName).toHaveBeenCalled();
+
+  // The mock function was called at least once with the specified args
+  expect(myMockFnName).toHaveBeenCalledWith(1);
+
+  // The last call to the mock function was called with the specified args
+  expect(myMockFnName).toHaveBeenLastCalledWith(1);
+});
