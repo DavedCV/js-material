@@ -7,13 +7,18 @@ import "./App.css";
 // import Wrapper from "./PassingAsChildren";
 // import List from "./RenderingLists";
 // import TodoList from "./Keys";
-import ButtonsWrapper from "./Props";
+// import ButtonsWrapper from "./Props";
+// import State from "./State";
+// import Events from "./Events";
+// import State from "./State2";
+// import State from "./State3";
+import State from "./StateAsSNapshot";
 
 function App() {
   return (
     <>
       <h1>Learning React!</h1>
-      <ButtonsWrapper />
+      <State />
     </>
   );
 }

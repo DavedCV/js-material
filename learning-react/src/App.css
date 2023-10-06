@@ -40,3 +40,10 @@
 .read-the-docs {
   color: #888;
 }
+
+.state {
+  padding: 2rem;
+  display: flex;
+  gap: 1rem;
+  border-radius: 1rem;
+}
