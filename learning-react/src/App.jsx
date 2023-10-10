@@ -18,11 +18,13 @@ import "./App.css";
 // import State from "./UpdatingArrayStates";
 // import Form, { Statuses } from "./reactingToInputWithState";
 // import Form from "./StateStructure";
+import Accordion from "./SharingStateBetweenComponents";
 
 function App() {
   return (
     <>
       <h1>Learning React!</h1>
+      <Accordion />
     </>
   );
 }
