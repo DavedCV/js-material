@@ -12,13 +12,17 @@ import "./App.css";
 // import Events from "./Events";
 // import State from "./State2";
 // import State from "./State3";
-import State from "./StateAsSNapshot";
+// import State from "./StateAsSNapshot";
+// import State from "./QueuingStateUpdated";
+// import State from "./UpdatingObjectsInState";
+// import State from "./UpdatingArrayStates";
+// import Form, { Statuses } from "./reactingToInputWithState";
+// import Form from "./StateStructure";
 
 function App() {
   return (
     <>
       <h1>Learning React!</h1>
-      <State />
     </>
   );
 }
