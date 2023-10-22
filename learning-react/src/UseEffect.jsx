@@ -20,14 +20,19 @@ describe how to start synchronization and how to stop it. If you do it well,
 your Effect will be resilient to being started and stopped as many times as 
 it’s needed.
 
-Every time after your component re-renders, React will look at the array of 
-dependencies that you have passed. If any of the values in the array is 
-different from the value at the same spot that you passed during the previous 
-render, React will re-synchronize your Effect. Reactive values must be included 
+Props that you may have used to synchronize an external system may change. but the
+component is still mounted.
+
+Every time after your component re-renders, your effect will re-synchronize, 
+React will look at the array of dependencies that you have passed. If any of 
+the values in the array is different from the value at the same spot that you 
+passed during the previous render, React will re-synchronize your Effect. Reactive 
+values must be included 
 in dependencies.
 
-- Each Effect in your code should represent a separate and independent 
-synchronization process.
+Resist adding unrelated logic to your Effect only because this logic needs to 
+run at the same time as an Effect you already wrote. Each Effect in your code 
+should represent a separate and independent synchronization process.
 */
 
 import { useState, useEffect } from "react";
