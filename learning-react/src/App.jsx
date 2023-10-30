@@ -22,11 +22,18 @@ import "./App.css";
 // import Clock from "./useEffectOdin";
 // import ChatDemo from "./UseEffect";
 // import UseEffectWithRefs from "./useEffectRefsIntoDependencies";
+// import TaskInput from "./buildingClassComponent";
+// import TaskInput from "./buildingClassComponent2";
+// import Connection from "./classComponentLifecycleMethods";
+// import RenderName from "./propTypes";
 
 function App() {
   return (
     <>
       <h1>Learning React!</h1>
+      <ul>
+        <li><a href="profile">Profile page</a></li>
+      </ul>
     </>
   );
 }
