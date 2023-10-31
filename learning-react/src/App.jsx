@@ -34,13 +34,13 @@ function App() {
       <h1>Learning React!</h1>
       <ul>
         <li>
-          <Link to="profile">Default</Link>
+          <Link to="/profile">Default</Link>
         </li>
         <li>
-          <Link to="profile/popeye">Popeye</Link>
+          <Link to="/profile/popeye">Popeye</Link>
         </li>
         <li>
-          <Link to="profile/spinach">Spinach</Link>
+          <Link to="/profile/spinach">Spinach</Link>
         </li>
       </ul>
     </>
