@@ -56,6 +56,9 @@ export default function Contact() {
 function Favorite({ contact }) {
   const fetcher = useFetcher();
   let favorite = contact.favorite;
+  if (fetcher.formData) {
+    favorite = fetcher.formData.get("favorite") === "true";
+  }
 
   return (
     <fetcher.Form method="post">
@@ -75,7 +78,7 @@ export async function action({ request, params }) {
   return updateContact(params.contactId, {
     favorite: formData.get("favorite") === "true",
   });
-} 
+}
 
 export async function loader({ params }) {
   const contact = await getContact(params.contactId);
