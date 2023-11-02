@@ -26,13 +26,15 @@ import "./App.css";
 // import TaskInput from "./buildingClassComponent2";
 // import Connection from "./classComponentLifecycleMethods";
 // import RenderName from "./propTypes";
-import Fetching from "./fetching";
+// import Fetching from "./fetching";
+// import Fetching from "./fetching/fetching2";
+import ReactQueryUse from "./fetching/reactQuery";
 
 function App() {
   return (
     <>
       <h1>Learning React!</h1>
-      <Fetching />
+      <ReactQueryUse />
     </>
   );
 }
