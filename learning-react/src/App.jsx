@@ -26,23 +26,13 @@ import "./App.css";
 // import TaskInput from "./buildingClassComponent2";
 // import Connection from "./classComponentLifecycleMethods";
 // import RenderName from "./propTypes";
-import { Link } from "react-router-dom";
+import Fetching from "./fetching";
 
 function App() {
   return (
     <>
       <h1>Learning React!</h1>
-      <ul>
-        <li>
-          <Link to="/profile">Default</Link>
-        </li>
-        <li>
-          <Link to="/profile/popeye">Popeye</Link>
-        </li>
-        <li>
-          <Link to="/profile/spinach">Spinach</Link>
-        </li>
-      </ul>
+      <Fetching />
     </>
   );
 }
