@@ -28,13 +28,12 @@ import "./App.css";
 // import RenderName from "./propTypes";
 // import Fetching from "./fetching";
 // import Fetching from "./fetching/fetching2";
-import ReactQueryUse from "./fetching/reactQuery";
+// import ReactQueryUse from "./fetching/reactQuery";
 
 function App() {
   return (
     <>
       <h1>Learning React!</h1>
-      <ReactQueryUse />
     </>
   );
 }
