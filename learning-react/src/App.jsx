@@ -29,11 +29,14 @@ import "./App.css";
 // import Fetching from "./fetching";
 // import Fetching from "./fetching/fetching2";
 // import ReactQueryUse from "./fetching/reactQuery";
+// import Reducer from "./basics/reducer";
+import Messenger from "./reducerExercises/dispatchActionFromEventHandlers";
 
 function App() {
   return (
     <>
       <h1>Learning React!</h1>
+      <Messenger />
     </>
   );
 }
