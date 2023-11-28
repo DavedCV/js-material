@@ -30,13 +30,14 @@ import "./App.css";
 // import Fetching from "./fetching/fetching2";
 // import ReactQueryUse from "./fetching/reactQuery";
 // import Reducer from "./basics/reducer";
-import Messenger from "./reducerExercises/dispatchActionFromEventHandlers";
+// import Messenger from "./reducerExercises/dispatchActionFromEventHandlers";
+import Context_test from "./context/context_api_2";
 
 function App() {
   return (
     <>
       <h1>Learning React!</h1>
-      <Messenger />
+      <Context_test />
     </>
   );
 }
