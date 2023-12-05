@@ -21,6 +21,9 @@ app.set("views", "clients&servers/views/");
 // add static files
 app.use(express.static("clients&servers/public"));
 
+// create an object to parse the request
+app.use(express.urlencoded({ extended: true }));
+
 // add middleware for logging
 app.use(morgan("dev"));
 
@@ -34,6 +37,7 @@ app.get("/about", (req, res) => {
 
 app.get("/blogs", (req, res) => {
   Blog.find()
+    .sort({ createdAt: -1 }) // -1 is descending order
     .then((results) => {
       res.render("index", { title: "All blogs", blogs: results });
     })
@@ -42,6 +46,38 @@ app.get("/blogs", (req, res) => {
 
 app.get("/blogs/create", (req, res) => {
   res.render("create", { title: "Create a new blog" });
+});
+
+app.post("/blogs/create", (req, res) => {
+  const blog = new Blog(req.body);
+
+  blog
+    .save()
+    .then((result) => {
+      res.redirect("/blogs");
+    })
+    .catch((err) => console.log(err));
+});
+
+app.get("/blogs/:id", (req, res) => {
+  // same name as the one in the route
+  const id = req.params.id;
+
+  Blog.findById(id)
+    .then((result) => {
+      res.render("details", { title: "Blog details", blog: result });
+    })
+    .catch((err) => console.log(err));
+});
+
+app.delete("/blogs/:id", (req, res) => {
+  const id = req.params.id;
+
+  Blog.findByIdAndDelete(id)
+    .then((result) => {
+      res.json({ redirect: "/blogs" });
+    })
+    .catch((err) => console.log(err));
 });
 
 // at the end because is a last resource when no path match the request
