@@ -10,7 +10,7 @@ const GenreSchema = new Schema(
     virtuals: {
       url: {
         get() {
-          return `catalog/genre/${this._id}`;
+          return `/catalog/genre/${this._id}`;
         },
       },
     },
