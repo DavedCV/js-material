@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
-const wikiRouter = require("./routes/wiki");
+const catalogRouter = require("./routes/catalog");
 
 const app = express();
 
@@ -17,7 +17,7 @@ mongoose.set("strictQuery", false);
 
 // Define the database URL to connect to.
 const mongoDB =
-  "mongodb+srv://davidnode:test1234@nodetuts.irfnmwr.mongodb.net/?retryWrites=true&w=majority";
+  "mongodb+srv://davidnode:test1234@nodetuts.irfnmwr.mongodb.net/library_project?retryWrites=true&w=majority";
 
 // Connect to the database
 mongoose.connect(mongoDB).catch((err) => console.log(err));
@@ -41,7 +41,7 @@ app.use(cookieParser());
 // use imported routers to handle views
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use("/wiki", wikiRouter);
+app.use("/catalog", catalogRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
