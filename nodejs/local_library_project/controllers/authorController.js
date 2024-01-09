@@ -1,5 +1,5 @@
 const Author = require("../models/author");
-const asyncHandler = require("../middleware/async");
+const asyncHandler = require("express-async-handler");
 
 // Display list of all Authors.
 exports.authorList = asyncHandler(async (req, res, next) => {
