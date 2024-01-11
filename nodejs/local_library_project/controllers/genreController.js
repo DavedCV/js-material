@@ -81,12 +81,47 @@ exports.genreCreatePost = [
 
 // Display Genre delete form on GET.
 exports.genreDeleteGet = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Genre delete GET");
+  const genreId = req.params.id;
+
+  // Get details of genre and their related books (in parallel)
+  const [genre, genreBooks] = await Promise.all([
+    Genre.findById(genreId).exec(),
+    Book.find({ genre: genreId }, "title summary").exec(),
+  ]);
+
+  if (genre == null) {
+    // No results.
+    res.redirect("/catalog/genres");
+  }
+
+  res.render("genreDelete", {
+    title: "Delete Genre",
+    genre: genre,
+    genreBooks: genreBooks,
+  });
 });
 
 // Handle Genre delete on POST.
 exports.genreDeletePost = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Genre delete POST");
+  const genreId = req.params.id;
+
+  // Get details of genre and their related books (in parallel)
+  const [genre, genreBooks] = await Promise.all([
+    Genre.findById(genreId).exec(),
+    Book.find({ genre: genreId }, "title summary").exec(),
+  ]);
+
+  if (genreBooks.length > 0) {
+    // Genre has books associated. Rende in the same way as the GET route
+    res.render("genreDelete", {
+      title: "Delete Genre",
+      genre: genre,
+      genreBooks: genreBooks,
+    });
+  } else {
+    await Genre.findByIdAndDelete(genreId).exec();
+    res.redirect("/catalog/genres");
+  }
 });
 
 // Display Genre update form on GET.
