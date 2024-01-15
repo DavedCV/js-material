@@ -4,6 +4,9 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
+const compression = require("compression");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
@@ -16,8 +19,9 @@ const app = express();
 mongoose.set("strictQuery", false);
 
 // Define the database URL to connect to.
-const mongoDB =
+const devMongoDB =
   "mongodb+srv://davidnode:test1234@nodetuts.irfnmwr.mongodb.net/library_project?retryWrites=true&w=majority";
+const mongoDB = process.env.MONGODB_URI || devMongoDB;
 
 // Connect to the database
 mongoose.connect(mongoDB).catch((err) => console.log(err));
@@ -27,8 +31,26 @@ mongoose.connect(mongoDB).catch((err) => console.log(err));
 app.set("views", path.join(__dirname, "views"));
 // what is the view engine in use
 app.set("view engine", "pug");
-console.log("Debug: Closing mongoose");
 
+// Set up rate limiter: maximum of twenty requests per minute
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 20,
+});
+
+// Apply rate limiter to all requests
+app.use(limiter);
+// Add helmet to the middleware chain.
+// Set CSP headers to allow our Bootstrap and Jquery to be served
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      "script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
+    },
+  })
+);
+// Compress all routes
+app.use(compression());
 // set the logger to dev mode
 app.use(logger("dev"));
 // Needed to populate the req.body with form fields
